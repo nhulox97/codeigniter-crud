@@ -23,7 +23,7 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $baseURL = 'http://localhost/practicas-pre/codeigniter-admin-template/public/';
+    public $baseURL = 'http://localhost/practicas-pre/semana-6/public/';
 
     /**
      * --------------------------------------------------------------------------
