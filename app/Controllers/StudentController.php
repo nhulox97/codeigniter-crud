@@ -4,13 +4,17 @@ namespace App\Controllers;
 
 use App\Entities\Student;
 use App\Models\StudentModel;
+use \Config\Services;
 
 class StudentController extends BaseController
 {
     protected StudentModel $model;
+    protected $session;
+
     public function __construct()
     {
         $this->model = new StudentModel();
+        $this->session = Services::session();
     }
     public function index()
     {
@@ -23,8 +27,7 @@ class StudentController extends BaseController
         $data['pager'] = $this->model->pager;
         $data['currPg'] = $pgSize;
         $data['title'] = 'Estudiantes';
-        $session = \Config\Services::session();
-        $data['result'] = $session->getFlashdata('result') ?? false;
+        $data['result'] = $this->session->getFlashdata('result') ?? false;
 
         echo view('layout/top.php', $data);
         echo view('student/index', $data);
@@ -42,10 +45,9 @@ class StudentController extends BaseController
             $student->dui = $this->request->getPost('dui');
             $student->code_id = $this->request->getPost('code_id');
             if ($this->model->save($student) === true) {
-                $session = \Config\Services::session();
                 $action_msg = $id < 0 ? ['type' => 'success', 'msg' => 'Student successfully created'] : ['type' => 'primary', 'msg' => 'Student successfully updated'];
                 $_SESSION['result'] = $action_msg;
-                $session->markAsFlashdata('result');
+                $this->session->markAsFlashdata('result');
                 return redirect()->to(site_url('student'));
             }
 
@@ -67,5 +69,19 @@ class StudentController extends BaseController
         echo view('layout/top.php', $data);
         echo view('student/add', $data);
         echo view('layout/bottom');
+    }
+
+    public function delete($id = 0)
+    {
+        $student = $this->model->find($id);
+        $result = ['type' => 'danger', 'msg' => 'Nothing deleted'];
+
+        if (!is_null($student)) {
+            $result = $this->model->delete($student->id) === true ? ['type' => 'danger', 'msg' => 'User deleted'] : ['type' => 'danger', 'msg' => 'Error on deletion'];
+        }
+
+        $_SESSION['result'] = $result;
+        $this->session->markAsFlashdata('result');
+        return redirect()->to(site_url('student'));
     }
 }
