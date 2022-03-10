@@ -14,8 +14,14 @@ class StudentController extends BaseController
     }
     public function index()
     {
-        $students = $this->model->findAll();
+        $pgSize = $this->request->getVar('pgSize') ?? 5;
+        $pg = $this->request->getVar('page') ?? 1;
+
+        $students = $this->model->paginate($pgSize, 'default', $pg);
+
         $data['students'] = $students;
+        $data['pager'] = $this->model->pager;
+        $data['currPg'] = $pgSize;
         $data['title'] = 'Estudiantes';
         $session = \Config\Services::session();
         $data['result'] = $session->getFlashdata('result') ?? false;
