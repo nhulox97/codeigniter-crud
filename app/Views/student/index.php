@@ -34,6 +34,7 @@
     <a href="<?= site_url('student/add/0') ?>" type=" button" class="btn btn-success">Agregar estudiante</a>
 </div>
 
+
 <table class="table">
     <thead>
         <tr>
@@ -45,15 +46,15 @@
             <th>Actions</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="studentsList">
         <?php $counter = 0; ?>
         <?php foreach ($students as $student) : ?>
             <tr>
                 <td><?php echo ++$counter; ?></td>
-                <td><?php echo $student->first_name; ?></td>
-                <td><?php echo $student->last_name; ?></td>
-                <td><?php echo $student->dui; ?></td>
-                <td><?php echo $student->code_id; ?></td>
+                <td id="first_name<?= $counter ?>"><?php echo $student->first_name; ?></td>
+                <td id="last_name<?= $counter ?>"><?php echo $student->last_name; ?></td>
+                <td id="dui<?= $counter ?>"><?php echo $student->dui; ?></td>
+                <td id="code_id<?= $counter ?>"><?php echo $student->code_id; ?></td>
                 <td>
                     <a href="<?= site_url('student/add/' . $student->id) ?>" type="button" class="btn btn-warning px-3"><i class="fas fa-pen" aria-hidden="true"></i></a>
                     <button type="button" class="btn btn-danger px-3" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteId(<?= $student->id ?>)"><i class="fas fa-trash" aria-hidden="true"></i></button>
@@ -69,7 +70,7 @@
     </div>
 
     <form class="pr-5" method="get" action="<?= current_url() ?>" id="pgSizeForm">
-        <select class="form-control float-right" name="pgSize" onchange="changePgSize()">
+        <select class="form-control float-right" name="pgSize" onchange="changePgSize()" id="pageSize">
             <?php foreach ([5, 10, 25, 50] as $limit) : ?>
                 <option <?php if ($currPg == $limit) echo 'selected' ?> value="<?= $limit ?>"> <?= $limit ?></option>
             <?php endforeach; ?>
@@ -87,7 +88,6 @@
 
     function changePgSize() {
         var element = document.getElementById('pgSizeForm');
-        console.log(element);
         element.submit();
     }
 

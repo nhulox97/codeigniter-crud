@@ -45,12 +45,13 @@ class StudentController extends BaseController
             $student->dui = $this->request->getPost('dui');
             $student->code_id = $this->request->getPost('code_id');
             if ($this->model->save($student) === true) {
-                $action_msg = $id < 0 ? ['type' => 'success', 'msg' => 'Student successfully created'] : ['type' => 'primary', 'msg' => 'Student successfully updated'];
+                $action_msg = $id == 0 ? ['type' => 'success', 'msg' => 'Student successfully created'] : ['type' => 'primary', 'msg' => 'Student successfully updated'];
                 $_SESSION['result'] = $action_msg;
                 $this->session->markAsFlashdata('result');
                 return redirect()->to(site_url('student'));
             }
 
+            $data['student'] = $student;
             $data['title'] = 'Actualizar estudiante';
             $data['errors'] = $this->model->errors();
         } else {
