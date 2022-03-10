@@ -31,8 +31,8 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/student', 'Student::index');
-$routes->get('/student/add/(:num)', 'Student::add/$1');
+$routes->get('/student', 'StudentController::index');
+$routes->match(['get', 'post'], '/student/add/(:num)', 'StudentController::add/$1');
 
 /*
  * --------------------------------------------------------------------
