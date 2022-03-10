@@ -1,7 +1,7 @@
 <?php if ($errors != false) : ?>
     <ul class="alert alert-warning alert-dismissible fade show" role="alert">
         <?php foreach ($errors as $error) : ?>
-            <p class="pl-2"><strong><?php echo $error; ?></strong></p>
+            <li class="pl-2"><strong><?php echo $error; ?></strong></li>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         <?php endforeach; ?>
     </ul>

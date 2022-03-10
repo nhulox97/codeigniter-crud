@@ -1,3 +1,11 @@
+<?php if ($result != false) : ?>
+    <div class="alert alert-<?= $result['type']; ?> alert-dismissible fade show" role="alert">
+        <p class="pl-2"><strong><?php echo $result['msg']; ?></strong></p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php endif; ?>
+
+
 <div class=" d-flex flex-row justify-content-end">
     <a href="<?= site_url('student/add/0') ?>" type=" button" class="btn btn-success">Agregar estudiante</a>
 </div>

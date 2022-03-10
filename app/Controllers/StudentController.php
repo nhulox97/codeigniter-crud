@@ -17,6 +17,8 @@ class StudentController extends BaseController
         $students = $this->model->findAll();
         $data['students'] = $students;
         $data['title'] = 'Estudiantes';
+        $session = \Config\Services::session();
+        $data['result'] = $session->getFlashdata('result') ?? false;
 
         echo view('layout/top.php', $data);
         echo view('student/index', $data);
@@ -29,12 +31,18 @@ class StudentController extends BaseController
         $data['errors'] = false;
         if ($this->request->getMethod() === 'post') {
             $student = $this->model->find($id) ?? new Student();
-            $og_student = $student;
             $student->first_name = $this->request->getPost('first_name');
             $student->last_name = $this->request->getPost('last_name');
             $student->dui = $this->request->getPost('dui');
             $student->code_id = $this->request->getPost('code_id');
-            if ($this->model->save($student) === true) return redirect()->to(site_url('student'));
+            if ($this->model->save($student) === true) {
+                $session = \Config\Services::session();
+                $action_msg = $id < 0 ? ['type' => 'success', 'msg' => 'Student successfully created'] : ['type' => 'primary', 'msg' => 'Student successfully updated'];
+                $_SESSION['result'] = $action_msg;
+                $session->markAsFlashdata('result');
+                return redirect()->to(site_url('student'));
+            }
+
             $data['title'] = 'Actualizar estudiante';
             $data['errors'] = $this->model->errors();
         } else {
